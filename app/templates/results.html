@@ -1,0 +1,25 @@
+{% extends "index.html" %}
+
+{% block content %}
+    <h1>Results</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>URL</th>
+                <th>Status</th>
+                <th>Reason</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for result in results %}
+            <tr>
+                <td>{{ result.url }}</td>
+                <td>{{ result.status }}</td>
+                <td>{{ result.reason }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <a href="{{ url_for('index') }}">Back Home</a>
+{% endblock %}
