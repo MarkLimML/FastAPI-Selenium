@@ -1,4 +1,4 @@
-from fastapi import FastAPI, BackgroundTasks, Request, HTTPException
+from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 from extract import *
@@ -13,7 +13,6 @@ class Msg(BaseModel):
     secret: str
 
 @app.get('/', response_class=HTMLResponse)
-@app.get('/index', response_class=HTMLResponse)
 async def root(request: Request):
     return """
     <html>
@@ -23,7 +22,7 @@ async def root(request: Request):
         <body>
             <hr>
             <h1>Input URLs here</h1>
-            <form action="" method="post" action="/results>
+            <form action="" method="get" action="/results>
                 <label for="URL">Enter URLs:</label>
                 <textarea id="urltext" name="urltext" rows="5" cols="50"></textarea>
                 <br>
@@ -40,14 +39,18 @@ async def root(request: Request):
 #    return render_template('form.html', title='TEST URL')
 ##
 
-@app.post("/results", response_class=HTMLResponse)
-async def demo_get(request: Request):
+@app.get("/results/{urltext}", response_class=HTMLResponse)
+async def demo_get(request: Request, urltext):
+    print("Processing")
+    urls = urltext
+    urllist = urls.split("\n")
+
     driver=createDriver()
 
     homepage = getGoogleHomepage(driver)
 
     results = []
-    for url in urltext:
+    for url in urllist:
         chkSiteOk,chkReason = doSiteCheck(driver, urltext)
         results.append({url,chkSiteOk,chkReason})
     print(results)
