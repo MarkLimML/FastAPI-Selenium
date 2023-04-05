@@ -3,6 +3,7 @@ from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 from extract import *
 import os
+import uvicorn
 
 SECRET = os.getenv("SECRET")
 
@@ -11,10 +12,10 @@ app = FastAPI()
 class Msg(BaseModel):
     msg: str
     secret: str
-
+"""
 @app.get('/', response_class=HTMLResponse)
 async def root(request: Request):
-    return """
+    return 
     <html>
         <head>
             <title>Test Site</title>
@@ -30,7 +31,8 @@ async def root(request: Request):
             </form>
         </body>
     </html>
-    """
+    
+"""
 ##
 #    if request.method == "POST":
 #        text = request.form['urltext']
@@ -39,19 +41,22 @@ async def root(request: Request):
 #    return render_template('form.html', title='TEST URL')
 ##
 
-@app.get("/results/{urltext}", response_class=HTMLResponse)
-async def demo_get(request: Request, urltext):
+@app.get("/", response_class=HTMLResponse)
+async def root():
     print("Processing")
-    urls = urltext
+    urls = """https://graceful-sunburst-78f35d.netlify.app/www.classcentral.com/index.html
+https://ammardab3an99.github.io/
+https://heartfelt-lollipop-736861.netlify.app/
+https://radiant-hummingbird-697a83.netlify.app/
+http://trialserver.rf.gd/trial6/www.classcentral.com/index.html"""
     urllist = urls.split("\n")
 
     driver=createDriver()
-
-    homepage = getGoogleHomepage(driver)
-
+    
     results = []
     for url in urllist:
-        chkSiteOk,chkReason = doSiteCheck(driver, urltext)
+        print(url)
+        chkSiteOk,chkReason = doSiteCheck(url)
         results.append({url,chkSiteOk,chkReason})
     print(results)
     driver.close()
@@ -78,7 +83,8 @@ async def demo_get(request: Request, urltext):
     <br>
     """
 
-
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
     
 
 
