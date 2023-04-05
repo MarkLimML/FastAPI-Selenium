@@ -19,6 +19,7 @@ class Msg(BaseModel):
 async def root():
     if request.method == "POST":
         text = request.form['urltext']
+        print(text)
         return render_template('results.html', title="TEST RESULT", urltext=text)
     return render_template('form.html', title='TEST URL')
 
@@ -33,7 +34,7 @@ async def demo_get(urltext):
     for url in urltext:
         chkSiteOk,chkReason = doSiteCheck(driver, urltext)
         results.append({url,chkSiteOk,chkReason})
-    
+    print(results)
     driver.close()
     return render_template('results.html', title="TEST RESULT", results=results)
 
