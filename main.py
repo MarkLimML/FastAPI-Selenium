@@ -12,10 +12,10 @@ app = FastAPI()
 class Msg(BaseModel):
     msg: str
     secret: str
-"""
+
 @app.get('/', response_class=HTMLResponse)
 async def root(request: Request):
-    return 
+    return """
     <html>
         <head>
             <title>Test Site</title>
@@ -33,13 +33,6 @@ async def root(request: Request):
     </html>
     
 """
-##
-#    if request.method == "POST":
-#        text = request.form['urltext']
-#        print(text)
-#        return render_template('results.html', title="TEST RESULT", urltext=text)
-#    return render_template('form.html', title='TEST URL')
-##
 
 @app.get("/", response_class=HTMLResponse)
 async def root():
@@ -52,7 +45,7 @@ http://trialserver.rf.gd/trial6/www.classcentral.com/index.html"""
     urllist = urls.split("\n")
 
     driver=createDriver()
-    
+
     results = []
     for url in urllist:
         print(url)
