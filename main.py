@@ -3,11 +3,9 @@ from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 from extract import *
 import os
-from app import app
 
 SECRET = os.getenv("SECRET")
 
-#
 app = FastAPI()
 
 class Msg(BaseModel):
